@@ -1,15 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { briefs, freelancers, REAL, type Brief, type Freelancer } from "@/lib/data";
-import { MarginNote, PaperCard, Pin, Reveal, ScribbleCircle, Stamp, Tape } from "./paper";
+import { services, REAL, type Service } from "@/lib/data";
+import { MarginNote, PaperCard, Reveal, ScribbleCircle, Stamp, Tape } from "./paper";
+import { PaperStorm } from "./wild";
 
-type Stage = "brief" | "matched" | "sealed" | "paid";
+type Stage = "browse" | "order" | "sealed" | "paid";
 
 const steps: { id: Stage; label: string }[] = [
-  { id: "brief", label: "Pin the brief" },
-  { id: "matched", label: "Meet matches" },
+  { id: "browse", label: "Pick a service" },
+  { id: "order", label: "Place order" },
   { id: "sealed", label: "Seal escrow" },
   { id: "paid", label: "Stamp paid" },
 ];
@@ -58,20 +60,22 @@ function Envelope({ sealed }: { sealed: boolean }) {
 }
 
 export default function Hero() {
-  const [stage, setStage] = useState<Stage>("brief");
-  const [brief, setBrief] = useState<Brief>(briefs[0]);
-  const [pro, setPro] = useState<Freelancer | null>(null);
+  const [stage, setStage] = useState<Stage>("browse");
+  const [service, setService] = useState<Service>(services[0]);
   const reduce = useReducedMotion();
   const stageIdx = steps.findIndex((s) => s.id === stage);
 
   const reset = () => {
-    setPro(null);
-    setBrief(briefs[0]);
-    setStage("brief");
+    setService(services[0]);
+    setStage("browse");
   };
 
   return (
     <section id="top" className="relative overflow-hidden pt-32 pb-10 sm:pt-40">
+      {/* paper storm — the desk is alive */}
+      <div className="absolute inset-0 z-0" aria-hidden="true">
+        <PaperStorm density={34} />
+      </div>
       {/* faint desk doodles */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[0.35]">
         <svg className="absolute left-[6%] top-40 hidden w-40 lg:block" viewBox="0 0 120 60">
@@ -82,48 +86,68 @@ export default function Hero() {
         </p>
       </div>
 
-      <div className="mx-auto max-w-6xl px-5">
+      {/* taped polaroid — a real desk */}
+      <div aria-hidden="true" className="absolute right-[2%] top-40 z-10 hidden w-60 xl:block">
+        <div
+          className="animate-float relative bg-card p-3 pb-12 shadow-lift"
+          style={{ "--fl-rot": "4deg" } as React.CSSProperties}
+        >
+          <Tape className="-top-3 left-1/2 -translate-x-1/2 -rotate-3" />
+          <Image
+            src="/img/hero.jpg"
+            alt=""
+            width={480}
+            height={320}
+            className="h-auto w-full rounded-[2px] object-cover"
+          />
+          <p className="mt-2.5 text-center font-hand text-[1.35rem] leading-none text-ink-soft">
+            a real desk, somewhere in india
+          </p>
+        </div>
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-6xl px-5">
         <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
           <Reveal>
             <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-line bg-card px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-pine shadow-card">
               <span aria-hidden="true" className="h-2 w-2 rounded-full bg-ember" />
-              India&apos;s curated freelance marketplace
+              {REAL.tagline}
             </p>
           </Reveal>
           <Reveal delay={0.08}>
-            <h1 className="font-display text-[clamp(2.9rem,8.5vw,6.2rem)] font-semibold leading-[0.98] tracking-[-0.025em]">
+            <h1 className="font-sans text-[clamp(3rem,9vw,6.6rem)] font-black leading-[0.95] tracking-[-0.02em]">
               Every deal,
               <br />
-              <em className="font-medium">
+              <em className="font-display font-medium italic">
                 <ScribbleCircle>on paper.</ScribbleCircle>
               </em>
             </h1>
           </Reveal>
           <Reveal delay={0.16}>
             <p className="mt-6 max-w-xl text-[1.12rem] leading-relaxed text-ink-soft">
-              Foontro matches you with verified freelancers, holds your money in escrow,
-              and releases it only when you approve the work. Hiring strangers — minus the gamble.
+              Browse verified services, order in minutes, and pay only when the work is
+              right. Your money sits in escrow until you approve — never pay and hope.
             </p>
           </Reveal>
           <Reveal delay={0.24}>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <a
-                href="#cta"
+                href="#order"
                 className="rounded-full bg-ember-deep px-7 py-3.5 text-[1rem] font-bold text-card shadow-stamp transition-transform hover:-translate-y-0.5"
               >
-                Post your brief — it&apos;s free
+                Browse services
               </a>
               <a
-                href="#board"
+                href="#how"
                 className="rounded-full border border-ink/20 bg-card px-7 py-3.5 text-[1rem] font-semibold shadow-card transition-transform hover:-translate-y-0.5"
               >
-                Browse the board
+                See how it works
               </a>
             </div>
           </Reveal>
           <Reveal delay={0.3}>
             <p className="tnum mt-6 text-[0.85rem] font-medium uppercase tracking-[0.14em] text-ink-faint">
-              {REAL.creators} {REAL.creatorsLabel} · escrow on every order
+              {REAL.creatorsNote} · escrow on every order
             </p>
           </Reveal>
         </div>
@@ -142,7 +166,7 @@ export default function Hero() {
                   Interactive demo · no real money moves
                 </p>
               </div>
-              <h2 className="font-display text-[clamp(1.5rem,3.4vw,2.2rem)] font-semibold tracking-tight">
+              <h2 className="font-sans text-[clamp(1.5rem,3.4vw,2.2rem)] font-extrabold tracking-tight">
                 Try a whole deal in 20 seconds.
               </h2>
 
@@ -167,109 +191,89 @@ export default function Hero() {
 
               <div className="relative mt-8 min-h-[380px] sm:min-h-[340px]">
                 <AnimatePresence mode="wait">
-                  {stage === "brief" && (
+                  {stage === "browse" && (
                     <motion.div
-                      key="brief"
+                      key="browse"
                       initial={reduce ? {} : { opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={reduce ? {} : { opacity: 0, y: -16 }}
                       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                     >
-                      <p className="font-hand text-2xl text-ink-soft">pick a brief to pin ↓</p>
-                      <div className="mt-4 grid gap-3 sm:grid-cols-3" role="group" aria-label="Choose a brief">
-                        {briefs.map((b) => (
+                      <p className="font-hand text-2xl text-ink-soft">pick a trending service ↓</p>
+                      <div className="mt-4 grid gap-3 sm:grid-cols-3" role="group" aria-label="Choose a service">
+                        {services.map((s) => (
                           <button
-                            key={b.id}
+                            key={s.id}
                             type="button"
-                            onClick={() => setBrief(b)}
-                            aria-pressed={brief.id === b.id}
+                            onClick={() => setService(s)}
+                            aria-pressed={service.id === s.id}
                             className={`rounded-[4px] border-2 p-4 text-left shadow-card transition-all hover:-translate-y-1 ${
-                              brief.id === b.id
+                              service.id === s.id
                                 ? "border-ember bg-card"
                                 : "border-transparent bg-paper-2/60"
                             }`}
                           >
-                            <p className="text-[0.8rem] font-bold uppercase tracking-[0.12em] text-ember-deep">
-                              {b.label}
+                            {s.badge && (
+                              <p className="text-[0.72rem] font-bold uppercase tracking-[0.12em] text-ember-deep">
+                                {s.badge}
+                              </p>
+                            )}
+                            <p className="mt-1 font-sans text-[1.05rem] font-bold leading-snug">
+                              {s.name}
                             </p>
-                            <p className="mt-1.5 font-display text-[1.05rem] font-semibold leading-snug">
-                              {b.title}
-                            </p>
-                            <p className="tnum mt-2 text-[0.9rem] font-bold">{b.budget}</p>
+                            <p className="mt-1 line-clamp-2 text-[0.88rem] text-ink-soft">{s.tagline}</p>
+                            <p className="tnum mt-2 text-[1rem] font-black text-pine">{s.price}</p>
                           </button>
                         ))}
                       </div>
                       <button
                         type="button"
-                        onClick={() => setStage("matched")}
+                        onClick={() => setStage("order")}
                         className="mt-6 inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 font-semibold text-paper shadow-card transition-transform hover:-translate-y-0.5"
                       >
-                        <Pin className="h-5 w-5" /> Pin the brief
+                        Order {service.name.split(" ")[0]}&apos;s service · {service.price}
                       </button>
+                      <p className="mt-3 text-[0.82rem] text-ink-faint">
+                        Real public listings from foontro.com — names, taglines and prices are real.
+                      </p>
                     </motion.div>
                   )}
 
-                  {stage === "matched" && (
+                  {stage === "order" && (
                     <motion.div
-                      key="matched"
+                      key="order"
                       initial={reduce ? {} : { opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={reduce ? {} : { opacity: 0, y: -16 }}
                       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                      className="flex flex-col items-center text-center"
                     >
-                      <div className="flex items-start gap-3 rounded-[4px] border-l-4 border-ember bg-paper-2/70 p-4">
-                        <Pin className="mt-0.5 h-6 w-6 shrink-0" />
-                        <div>
-                          <p className="text-[0.78rem] font-bold uppercase tracking-[0.14em] text-ember-deep">
-                            Pinned brief
-                          </p>
-                          <p className="font-display text-[1.1rem] font-semibold">{brief.title}</p>
-                          <p className="text-[0.92rem] text-ink-soft">{brief.blurb}</p>
+                      <div className="paper-tex w-full max-w-md rounded-[4px] bg-card p-5 text-left shadow-lift">
+                        <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-ember-deep">
+                          Order summary
+                        </p>
+                        <p className="mt-2 font-sans text-[1.05rem] font-bold leading-snug">{service.tagline}</p>
+                        <div className="mt-3 flex items-center justify-between border-t border-dashed border-line pt-3">
+                          <span className="text-[0.9rem] text-ink-soft">by {service.name}</span>
+                          <span className="tnum font-sans text-[1.3rem] font-black">{service.price}</span>
                         </div>
-                        <p className="tnum ml-auto shrink-0 font-display text-[1.3rem] font-bold">{brief.budget}</p>
                       </div>
-                      <p className="mt-5 font-hand text-2xl text-ink-soft">
-                        3 verified freelancers answered — pick yours
+                      <p className="mt-5 max-w-md text-[1rem] leading-relaxed text-ink-soft">
+                        One tap and your <strong className="text-ink">{service.price}</strong> moves
+                        into Foontro escrow. <strong className="text-ink">{service.name.split(" ")[0]}</strong> sees
+                        the money is real — and starts work.
                       </p>
-                      <div className="mt-3 grid gap-3 sm:grid-cols-3">
-                        {freelancers.map((f, i) => (
-                          <motion.div
-                            key={f.name}
-                            initial={reduce ? {} : { opacity: 0, y: 26, rotate: i % 2 ? 2 : -2 }}
-                            animate={{ opacity: 1, y: 0, rotate: 0 }}
-                            transition={{ delay: 0.12 + i * 0.1, type: "spring", stiffness: 220, damping: 20 }}
-                            className="paper-tex rounded-[4px] bg-card p-4 shadow-card"
-                          >
-                            <div className="flex items-center justify-between">
-                              <p className="font-display text-[1.05rem] font-bold">{f.name}</p>
-                              <span className="rounded-full bg-pine/10 px-2.5 py-1 text-[0.7rem] font-bold uppercase tracking-[0.1em] text-pine">
-                                ✓ Verified
-                              </span>
-                            </div>
-                            <p className="text-[0.88rem] text-ink-soft">
-                              {f.craft} · {f.city}
-                            </p>
-                            <p className="tnum mt-1 text-[0.85rem] font-semibold text-ink-faint">
-                              ★ {f.rating} · {f.projects} projects
-                            </p>
-                            <p className="mt-2 text-[0.88rem] italic text-ink-soft">“{f.note}”</p>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setPro(f);
-                                setStage("sealed");
-                              }}
-                              className="mt-3 w-full rounded-full bg-paper-2 px-4 py-2.5 text-[0.92rem] font-bold transition-colors hover:bg-ink hover:text-paper"
-                            >
-                              Hire {f.name.split(" ")[0]}
-                            </button>
-                          </motion.div>
-                        ))}
-                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setStage("sealed")}
+                        className="mt-6 rounded-full bg-ember-deep px-7 py-3 font-bold text-card shadow-stamp transition-transform hover:-translate-y-0.5"
+                      >
+                        Place order · seal it in escrow
+                      </button>
                     </motion.div>
                   )}
 
-                  {stage === "sealed" && pro && (
+                  {stage === "sealed" && (
                     <motion.div
                       key="sealed"
                       initial={reduce ? {} : { opacity: 0, y: 20 }}
@@ -285,23 +289,23 @@ export default function Hero() {
                         transition={{ delay: 0.35, type: "spring", stiffness: 260, damping: 15 }}
                         className="mt-2"
                       >
-                        <Stamp>{brief.budget} sealed</Stamp>
+                        <Stamp>{service.price} sealed</Stamp>
                       </motion.div>
                       <p className="mt-5 max-w-md text-[1rem] leading-relaxed text-ink-soft">
-                        <strong className="text-ink">{pro.name}</strong> can see the money is real
-                        and starts work. You hold the only key — your approval.
+                        The freelancer delivers through the platform, you chat and request
+                        revisions in one thread. You hold the only key — your approval.
                       </p>
                       <button
                         type="button"
                         onClick={() => setStage("paid")}
-                        className="mt-6 rounded-full bg-ember-deep px-7 py-3 font-bold text-card shadow-stamp transition-transform hover:-translate-y-0.5"
+                        className="mt-6 rounded-full bg-pine px-7 py-3 font-bold text-card shadow-stamp transition-transform hover:-translate-y-0.5"
                       >
-                        Approve the work
+                        Approve &amp; pay
                       </button>
                     </motion.div>
                   )}
 
-                  {stage === "paid" && pro && (
+                  {stage === "paid" && (
                     <motion.div
                       key="paid"
                       initial={reduce ? {} : { opacity: 0 }}
@@ -317,9 +321,9 @@ export default function Hero() {
                         <span className="stamp text-[2rem] text-pine-deep">Paid</span>
                       </motion.div>
                       <p className="mt-6 max-w-md text-[1.05rem] leading-relaxed text-ink-soft">
-                        <strong className="text-ink">{brief.budget}</strong> released to{" "}
-                        <strong className="text-ink">{pro.name}</strong>. The brief, the escrow,
-                        the approval — one clean paper trail.
+                        <strong className="text-ink">{service.price}</strong> released to{" "}
+                        <strong className="text-ink">{service.name}</strong>. Browse, order,
+                        chat, approve — one clean paper trail.
                       </p>
                       <button
                         type="button"
@@ -334,7 +338,7 @@ export default function Hero() {
               </div>
 
               <MarginNote className="mt-4 text-right">
-                this is the whole product, really — pin, seal, stamp.
+                this is the whole product, really — browse, order, approve.
               </MarginNote>
             </PaperCard>
           </div>

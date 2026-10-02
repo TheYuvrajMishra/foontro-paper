@@ -1,17 +1,18 @@
 import { PaperCard, Reveal, SectionHead, Stamp, Tape } from "./paper";
 
+/* Client points follow foontro.com's official "how to hire" guide. */
 const clientPoints = [
-  { t: "Verified portfolios", c: "Every freelancer passes a human verification check before taking orders." },
-  { t: "Escrow on every order", c: "Your money is sealed before work begins. No chasing, no advances lost." },
-  { t: "Milestone approvals", c: "Big project? Split it into milestones and approve each fold as it lands." },
-  { t: "Direct chat + revisions", c: "Talk to the person doing the work. Revisions happen before money moves." },
+  { t: "Explore verified services", c: "Browse the catalog — every freelancer passed manual verification." },
+  { t: "Choose with confidence", c: "Compare profiles, portfolios, ratings and pricing side by side." },
+  { t: "Place your order securely", c: "Confirm the details, place the order — payment is held in escrow." },
+  { t: "Collaborate, then approve", c: "Built-in chat, file sharing, revisions. Approve and the money releases." },
 ];
 
 const proPoints = [
-  { t: "Pay secured before you start", c: "The brief comes with proof of funds. No more 'exposure' gigs." },
-  { t: "No bidding wars", c: "Get matched to briefs that fit your craft. Your portfolio does the talking." },
+  { t: "Pay secured before you start", c: "Every order arrives with proof of funds in escrow. No more 'exposure' gigs." },
+  { t: "Verified means verified", c: "Only 21% of applications are approved — the badge actually means something." },
   { t: "Streaks boost visibility", c: "Log in daily, earn metallic frames, and climb the search rankings." },
-  { t: "Keep every rupee honest", c: "Clear payouts on approval. Your paper trail builds your reputation." },
+  { t: "Foontro Pro keeps 100%", c: "₹499 keeps your full payout — plus priority ranking and a gold frame." },
 ];
 
 function Sheet({
@@ -35,7 +36,7 @@ function Sheet({
     <PaperCard className="relative flex h-full flex-col p-7 sm:p-9">
       <Tape tone={tapeTone} className="-top-3 left-1/2 -translate-x-1/2 -rotate-2" />
       <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-pine">{eyebrow}</p>
-      <h3 className="mt-3 font-display text-[clamp(1.6rem,3vw,2.1rem)] font-semibold leading-tight tracking-tight">
+      <h3 className="mt-3 font-sans text-[clamp(1.6rem,3vw,2.1rem)] font-extrabold leading-tight tracking-tight">
         {title}
       </h3>
       <ul className="mt-6 flex flex-col gap-4">
@@ -86,8 +87,8 @@ export default function Audiences() {
               eyebrow="For clients"
               title="Hire like you've worked with them for years."
               points={clientPoints}
-              cta="Post a brief — free"
-              ctaHref="#cta"
+              cta="Browse services"
+              ctaHref="#order"
               stamp="Zero risk hiring"
             />
           </Reveal>
@@ -97,7 +98,7 @@ export default function Audiences() {
               eyebrow="For freelancers"
               title="Your craft, guaranteed pay."
               points={proPoints}
-              cta="Apply as a freelancer"
+              cta="List your skills — free"
               ctaHref="#cta"
               stamp="Verified only"
               tapeTone="tape-rose"

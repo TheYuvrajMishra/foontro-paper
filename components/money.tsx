@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { faqs, fees } from "@/lib/data";
-import { PaperCard, Reveal, SectionHead, TornBottom, TornTop } from "./paper";
+import { faqs, pricing, escrowQuotes } from "@/lib/data";
+import { PaperCard, Pin, Reveal, SectionHead, TornBottom, TornTop } from "./paper";
 
 function FaqItem({ q, a, open, onToggle }: { q: string; a: string; open: boolean; onToggle: () => void }) {
   const reduce = useReducedMotion();
@@ -15,12 +15,12 @@ function FaqItem({ q, a, open, onToggle }: { q: string; a: string; open: boolean
         aria-expanded={open}
         className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
       >
-        <span className="font-display text-[1.12rem] font-semibold tracking-tight">{q}</span>
+        <span className="font-sans text-[1.12rem] font-semibold tracking-tight">{q}</span>
         <motion.span
           aria-hidden="true"
           animate={{ rotate: open ? 45 : 0 }}
           transition={{ duration: 0.2 }}
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-paper-2 font-display text-[1.3rem] font-bold leading-none"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-paper-2 font-sans text-[1.3rem] font-bold leading-none"
         >
           +
         </motion.span>
@@ -44,46 +44,61 @@ function FaqItem({ q, a, open, onToggle }: { q: string; a: string; open: boolean
 export default function Money() {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
   return (
-    <section id="faq" aria-label="Pricing and FAQ" className="relative scroll-mt-20 bg-paper-2">
+    <section id="money" aria-label="Pricing and FAQ" className="relative scroll-mt-20 bg-paper-2">
       <TornTop className="text-paper" />
       <div className="mx-auto max-w-6xl px-5 pt-16 pb-20">
         <SectionHead
           eyebrow="Money mechanics"
           title={
             <>
-              One honest paragraph <em className="font-medium">about money.</em>
+              Simple pricing, <em className="font-medium">no surprise fees.</em>
             </>
           }
-          lede="Posting a brief is free. Browsing and chatting are free. Holding your money in escrow is free. Foontro earns a small platform fee on completed orders — the exact figure is being finalised, so here is the whole table with the gaps labelled, not hidden."
+          lede="The real numbers from foontro.com. For clients: browsing and signing up are free — the commission is shown transparently at checkout before you confirm."
         />
 
+        <div className="mx-auto mt-12 grid max-w-3xl gap-6 sm:grid-cols-2">
+          {pricing.freelancerPlans.map((p, i) => (
+            <Reveal key={p.name} delay={i * 0.08} className="h-full">
+              <PaperCard tilt={i ? "1.2deg" : "-1.2deg"} className="relative h-full p-7">
+                {i === 1 && <Pin className="absolute -top-3 left-1/2 -translate-x-1/2" />}
+                <p className="text-[0.75rem] font-bold uppercase tracking-[0.16em] text-ember-deep">{p.tag}</p>
+                <h3 className="mt-1 font-sans text-[1.7rem] font-extrabold tracking-tight">{p.name}</h3>
+                <p className="tnum mt-1 font-sans text-[2.4rem] font-black text-pine">{p.price}</p>
+                <ul className="mt-4 space-y-2">
+                  {p.rows.map((r) => (
+                    <li key={r} className="flex items-start gap-2 text-[0.95rem] leading-snug text-ink-soft">
+                      <span aria-hidden="true" className="mt-0.5 font-bold text-pine">✓</span> {r}
+                    </li>
+                  ))}
+                </ul>
+                {p.footnote && (
+                  <p className="mt-4 border-t border-dashed border-line pt-3 text-[0.82rem] text-ink-faint">
+                    {p.footnote}
+                  </p>
+                )}
+              </PaperCard>
+            </Reveal>
+          ))}
+        </div>
+
         <Reveal delay={0.1}>
-          <PaperCard className="mx-auto mt-12 max-w-2xl p-2">
-            <ul className="ruled">
-              {fees.map((f) => (
-                <li
-                  key={f.row}
-                  className="flex items-center justify-between gap-4 border-b border-dashed border-line px-6 py-4 last:border-0"
-                >
-                  <span className="font-medium">{f.row}</span>
-                  {f.confirm ? (
-                    <span className="rounded-full border-2 border-ink-faint px-3.5 py-1 text-[0.75rem] font-bold uppercase tracking-[0.12em] text-ink-faint">
-                      To confirm
-                    </span>
-                  ) : (
-                    <span className="tnum font-display text-[1.2rem] font-bold text-pine">{f.value}</span>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </PaperCard>
+          <div className="mx-auto mt-8 max-w-3xl rounded-[4px] border border-line bg-card p-6 shadow-card">
+            <p className="text-[0.95rem] leading-relaxed text-ink-soft">{pricing.clientNote}</p>
+            <p className="mt-3 border-t border-dashed border-line pt-3 text-[0.9rem] leading-relaxed text-ink-soft">
+              <strong className="text-ink">Payments:</strong> {escrowQuotes.methods}
+            </p>
+          </div>
         </Reveal>
 
-        <div className="mx-auto mt-20 max-w-3xl">
+        <div id="faq" className="mx-auto mt-20 max-w-3xl scroll-mt-24">
           <Reveal>
-            <h3 className="text-center font-display text-[clamp(1.6rem,3.4vw,2.4rem)] font-semibold tracking-tight">
-              Asked at the desk, <em className="font-medium">often.</em>
+            <h3 className="text-center font-sans text-[clamp(1.6rem,3.4vw,2.4rem)] font-extrabold tracking-tight">
+              You asked. <em className="font-medium">We answered.</em>
             </h3>
+            <p className="mt-2 text-center text-[0.92rem] text-ink-soft">
+              The questions everyone asks — answered with the site&apos;s own words.
+            </p>
           </Reveal>
           <div className="mt-8 flex flex-col gap-3">
             {faqs.map((f, i) => (

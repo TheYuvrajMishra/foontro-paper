@@ -4,13 +4,9 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 
-const links = [
-  { label: "How it works", href: "#how" },
-  { label: "Escrow", href: "#escrow" },
-  { label: "Categories", href: "#board" },
-  { label: "Freelancers", href: "#freelancers" },
-  { label: "FAQ", href: "#faq" },
-];
+import { navLinks } from "@/lib/data";
+
+const links = navLinks;
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -38,7 +34,7 @@ export default function Nav() {
       <nav aria-label="Primary" className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5">
         <a href="#top" className="flex items-center gap-2.5" aria-label="Foontro home">
           <Image src="/foontro-logo.svg" alt="" width={34} height={34} className="h-8 w-8" />
-          <span className="font-display text-[1.45rem] font-bold tracking-tight">Foontro</span>
+          <span className="font-sans text-[1.45rem] font-extrabold tracking-tight">Foontro</span>
         </a>
 
         <ul className="hidden items-center gap-7 lg:flex">
@@ -56,10 +52,10 @@ export default function Nav() {
 
         <div className="flex items-center gap-3">
           <a
-            href="#cta"
+            href="#order"
             className="hidden rounded-full bg-ink px-5 py-2.5 text-[0.92rem] font-semibold text-paper shadow-card transition-transform hover:-translate-y-0.5 sm:inline-block"
           >
-            Post a brief
+            Browse services
           </a>
           <button
             type="button"
@@ -102,11 +98,11 @@ export default function Nav() {
               ))}
               <li className="pt-2">
                 <a
-                  href="#cta"
+                  href="#order"
                   onClick={() => setOpen(false)}
                   className="block rounded-full bg-ink px-5 py-3 text-center font-semibold text-paper"
                 >
-                  Post a brief
+                  Browse services
                 </a>
               </li>
             </ul>

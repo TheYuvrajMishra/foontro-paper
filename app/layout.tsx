@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Instrument_Sans, Caveat } from "next/font/google";
+import { Fraunces, Zain, Caveat } from "next/font/google";
 import "./globals.css";
 
 const display = Fraunces({
@@ -10,10 +10,11 @@ const display = Fraunces({
   display: "swap",
 });
 
-const sans = Instrument_Sans({
+/* Zain is the primary typeface — body, UI, and headlines */
+const zain = Zain({
   subsets: ["latin"],
   variable: "--font-sans",
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "700", "800", "900"],
   display: "swap",
 });
 
@@ -52,7 +53,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${display.variable} ${sans.variable} ${hand.variable}`}>
+    <html lang="en" className={`${display.variable} ${zain.variable} ${hand.variable}`}>
       <body className="bg-paper text-ink antialiased">
         <script
           type="application/ld+json"

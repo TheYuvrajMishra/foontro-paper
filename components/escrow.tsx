@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Image from "next/image";
 import {
   motion,
   useMotionValueEvent,
@@ -8,7 +9,7 @@ import {
   useScroll,
   useTransform,
 } from "motion/react";
-import { MarginNote, Reveal, Stamp, TornBottom, TornTop } from "./paper";
+import { MarginNote, Reveal, Stamp, Tape, TornBottom, TornTop } from "./paper";
 
 const captions = [
   "Sealed — your money waits inside.",
@@ -54,8 +55,8 @@ function VaultEnvelope() {
             className="paper-tex absolute left-1/2 top-6 z-10 w-64 -translate-x-1/2 rounded-[4px] bg-card p-5 text-center shadow-lift"
           >
             <p className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-pine">Escrow release</p>
-            <p className="tnum mt-2 font-display text-[2rem] font-bold text-ink">₹4,500</p>
-            <p className="mt-1 text-[0.9rem] text-ink-soft">to Ananya S. — approved by you</p>
+            <p className="tnum mt-2 font-sans text-[2rem] font-bold text-ink">₹1,200</p>
+            <p className="mt-1 text-[0.9rem] text-ink-soft">demo order · released on approval</p>
             <p className="mt-3 inline-block rounded-full bg-pine/10 px-3 py-1 text-[0.72rem] font-bold uppercase tracking-[0.12em] text-pine">
               ✓ Released
             </p>
@@ -101,24 +102,28 @@ function OpenEnvelopeStatic() {
   return (
     <div className="paper-tex w-64 rounded-[4px] bg-card p-5 text-center shadow-lift" role="img" aria-label="Released escrow note">
       <p className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-pine">Escrow release</p>
-      <p className="tnum mt-2 font-display text-[2rem] font-bold text-ink">₹4,500</p>
-      <p className="mt-1 text-[0.9rem] text-ink-soft">to Ananya S. — approved by you</p>
+      <p className="tnum mt-2 font-sans text-[2rem] font-bold text-ink">₹1,200</p>
+      <p className="mt-1 text-[0.9rem] text-ink-soft">demo order · released on approval</p>
     </div>
   );
 }
 
 const rules = [
   {
-    t: "Paid upfront, held by Foontro",
-    c: "You pay when you order. The freelancer can't touch it — but they can see it's real.",
-  },
-  {
-    t: "Work starts on proof of funds",
-    c: "No more 'do the work, we'll pay later'. The money is already on the table, sealed.",
+    t: "Paid on order, held by Foontro",
+    c: "“When you place an order, your payment goes into Foontro, it does not reach the freelancer yet.”",
   },
   {
     t: "Released only on your approval",
-    c: "Revisions happen first if needed. Your stamp is the only key to the envelope.",
+    c: "“The freelancer completes the work and delivers it to you through the platform. You review the delivery. Once you approve it, the payment is released.”",
+  },
+  {
+    t: "Neither side can be cheated",
+    c: "“Your money is held safely and only released when you approve the delivery, you never pay and hope. As a freelancer, you are protected from clients who receive work and refuse to pay.”",
+  },
+  {
+    t: "Disputes get a human review",
+    c: "“If a freelancer fails to deliver within the agreed timeline, you can raise a dispute. Foontro's team will review the case and, if valid, your payment will be refunded.”",
   },
 ];
 
@@ -136,8 +141,8 @@ export default function Escrow() {
             </p>
           </Reveal>
           <Reveal delay={0.08}>
-            <h2 className="mt-5 font-display text-[clamp(2rem,5.2vw,3.6rem)] font-semibold leading-[1.04] tracking-[-0.02em]">
-              The sealed-envelope <em className="font-medium text-ember">rule.</em>
+            <h2 className="mt-5 font-sans text-[clamp(2rem,5.2vw,3.6rem)] font-black leading-[1.04] tracking-[-0.02em]">
+              The sealed-envelope <em className="font-display font-medium italic text-ember">rule.</em>
             </h2>
           </Reveal>
           <Reveal delay={0.16}>
@@ -150,10 +155,25 @@ export default function Escrow() {
 
         <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_1.4fr] lg:items-start">
           <div className="flex flex-col gap-5 pt-4 lg:sticky lg:top-28">
+            <Reveal>
+              <div className="relative rotate-[-2deg] bg-card p-3 pb-10 shadow-lift">
+                <Tape className="-top-3 left-8 -rotate-6" />
+                <Image
+                  src="/img/escrow.jpg"
+                  alt="An antique sealed envelope — how every Foontro payment waits"
+                  width={520}
+                  height={340}
+                  className="aspect-[3/2] w-full rounded-[2px] object-cover"
+                />
+                <p className="mt-2.5 text-center font-hand text-[1.35rem] leading-none text-ink-soft">
+                  exhibit A: the sealed envelope
+                </p>
+              </div>
+            </Reveal>
             {rules.map((r, i) => (
               <Reveal key={r.t} delay={i * 0.08}>
                 <div className="rounded-[4px] border border-paper/15 bg-paper/5 p-5">
-                  <p className="flex items-center gap-3 font-display text-[1.15rem] font-semibold">
+                  <p className="flex items-center gap-3 font-sans text-[1.15rem] font-semibold">
                     <span className="tnum flex h-8 w-8 items-center justify-center rounded-full bg-ember text-[0.9rem] font-bold text-card">
                       {i + 1}
                     </span>

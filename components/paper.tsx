@@ -159,7 +159,7 @@ export function SectionHead({
         </p>
       </Reveal>
       <Reveal delay={0.08}>
-        <h2 className="font-display text-[clamp(2rem,5.2vw,3.6rem)] font-semibold leading-[1.04] tracking-[-0.02em]">
+        <h2 className="font-sans text-[clamp(2.1rem,5.4vw,3.8rem)] font-extrabold leading-[1.02] tracking-[-0.015em]">
           {title}
         </h2>
       </Reveal>

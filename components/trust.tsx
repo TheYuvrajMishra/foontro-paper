@@ -3,10 +3,12 @@ import { Marquee, Reveal, TornBottom, TornTop } from "./paper";
 
 const stubs = [
   { big: REAL.creators, small: "creators & teams" },
+  { big: REAL.acceptanceRate, small: "freelancer acceptance rate" },
   { big: "Every", small: "order escrow-protected" },
-  { big: "Verified", small: "profiles only — humans check" },
   { big: "Zero", small: "bidding wars. Ever." },
 ];
+
+const popular = ["Logo Design", "Short Form Video Editing", "YouTube Thumbnail Design", "Social Media Ads"];
 
 export default function Trust() {
   return (
@@ -25,7 +27,7 @@ export default function Trust() {
                   aria-hidden="true"
                   className="absolute inset-y-3 right-0 border-r-2 border-dashed border-line"
                 />
-                <p className="tnum font-display text-[2.4rem] font-bold tracking-tight text-ink">
+                <p className="tnum font-sans text-[2.4rem] font-bold tracking-tight text-ink">
                   {s.big}
                 </p>
                 <p className="mt-1 text-[0.85rem] font-semibold uppercase tracking-[0.12em] text-ink-soft">
@@ -35,6 +37,12 @@ export default function Trust() {
             </Reveal>
           ))}
         </div>
+        <Reveal delay={0.12}>
+          <p className="mx-auto mt-6 max-w-xl text-center text-[0.92rem] leading-relaxed text-ink-soft">
+            {REAL.acceptanceNote} — every application is manually reviewed by the
+            Foontro team, not an algorithm.
+          </p>
+        </Reveal>
 
         <Reveal delay={0.1}>
           <p className="mt-10 mb-4 text-center text-[11px] font-bold uppercase tracking-[0.22em] text-ink-faint">
@@ -44,14 +52,13 @@ export default function Trust() {
         <Marquee>
           {categories.map((c) => (
             <span
-              key={c.name}
+              key={c.slug}
               className="paper-tex whitespace-nowrap rounded-full border border-line bg-card px-5 py-2.5 text-[0.95rem] font-semibold shadow-card"
             >
-              {c.name}
-              <span className="tnum ml-2 text-[0.8rem] font-medium text-ink-faint">from {c.from}*</span>
+              {c.title}
             </span>
           ))}
-          {["Logo design", "Pitch decks", "Thumbnails", "Copywriting", "Chatbots", "Voiceovers"].map((g) => (
+          {popular.map((g) => (
             <span
               key={g}
               className="whitespace-nowrap rounded-full bg-ink px-5 py-2.5 text-[0.95rem] font-semibold text-paper"
@@ -60,7 +67,9 @@ export default function Trust() {
             </span>
           ))}
         </Marquee>
-        <p className="mt-3 text-center text-[0.75rem] text-ink-faint">*Illustrative starting prices</p>
+        <p className="mt-3 text-center text-[0.75rem] text-ink-faint">
+          Real categories &amp; popular searches from foontro.com
+        </p>
       </div>
       <TornBottom className="text-paper" />
     </section>
