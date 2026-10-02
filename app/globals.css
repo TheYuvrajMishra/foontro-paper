@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* ——— Paper Trails palette: warm desk paper, ink, Foontro ember ——— */
+  --color-paper: #f7f1e2;
+  --color-paper-2: #efe5cd;
+  --color-card: #fdfaf1;
+  --color-kraft: #e4d3ac;
+  --color-ink: #221c11;
+  --color-ink-soft: #6f6250;
+  --color-ink-faint: #a2937a;
+  --color-line: #e0d2b0;
+  --color-ember: #f36938;
+  --color-ember-deep: #b64a22;
+  --color-pine: #2f5d46;
+  --color-pine-deep: #1e4030;
+  --color-gold: #c9962e;
+
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+  --font-hand: var(--font-hand);
+
+  --shadow-card: 0 1px 2px rgb(34 28 17 / 0.08), 0 8px 24px -8px rgb(34 28 17 / 0.18);
+  --shadow-lift: 0 2px 4px rgb(34 28 17 / 0.1), 0 20px 44px -12px rgb(34 28 17 / 0.28);
+  --shadow-stamp: 0 10px 30px -10px rgb(182 74 34 / 0.5);
+
+  --animate-marquee: marquee 36s linear infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-float-late: float 8.5s ease-in-out -3s infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(var(--fl-rot, 0deg)); }
+    50% { transform: translateY(-12px) rotate(var(--fl-rot, 0deg)); }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-ember);
+  color: var(--color-card);
+}
+
+/* ——— film / paper grain ——— */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.10'/%3E%3C/svg%3E");
+}
+
+.paper-tex {
+  position: relative;
+}
+.paper-tex::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23p)' opacity='0.06'/%3E%3C/svg%3E");
+}
+
+/* ruled notebook lines */
+.ruled {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 31px,
+    rgb(34 28 17 / 0.07) 31px,
+    rgb(34 28 17 / 0.07) 32px
+  );
+}
+
+/* ——— washi tape ——— */
+.tape {
+  position: absolute;
+  width: 96px;
+  height: 28px;
+  background: linear-gradient(105deg, rgb(242 196 132 / 0.75), rgb(235 178 112 / 0.65));
+  box-shadow: 0 1px 3px rgb(34 28 17 / 0.18);
+  clip-path: polygon(2% 8%, 98% 0%, 100% 88%, 0% 100%);
+  opacity: 0.9;
+}
+.tape-blue {
+  background: linear-gradient(105deg, rgb(150 178 205 / 0.7), rgb(130 160 195 / 0.6));
+}
+.tape-rose {
+  background: linear-gradient(105deg, rgb(232 150 140 / 0.7), rgb(222 132 122 / 0.6));
+}
+
+/* ——— rubber stamp ——— */
+.stamp {
+  display: inline-block;
+  border: 3px solid currentColor;
+  outline: 1.5px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 6px;
+  padding: 0.35em 0.8em;
+  font-family: var(--font-sans);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  transform: rotate(-7deg);
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23s)' opacity='0.9'/%3E%3C/svg%3E");
+  mask-size: 120px;
+}
+
+/* hand-drawn circle around a word */
+.scribble-circle {
+  position: relative;
+  white-space: nowrap;
+}
+.scribble-circle > svg {
+  position: absolute;
+  inset: -18% -10% -22% -10%;
+  width: 120%;
+  height: 140%;
+  pointer-events: none;
+}
+
+/* focus */
+:focus-visible {
+  outline: 3px solid var(--color-ember);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* tabular numerals for stats */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ——— reduced motion: force final states ——— */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001s !important;
+  }
+  .grain {
+    display: none;
+  }
+}
